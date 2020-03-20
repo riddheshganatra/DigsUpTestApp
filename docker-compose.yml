@@ -1,0 +1,40 @@
+version: "3"
+services:
+
+  frontend:
+    container_name: frontend
+    ports:
+      - "4200:80"
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+
+  postgresdb:
+    container_name: postgresdb
+    image: postgres:alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=123123
+
+  mailcatcher:
+      container_name: mailcatcher
+      image: schickling/mailcatcher
+      ports:
+      - "1080:1080"
+      - "1025:1025"
+
+  apis:
+    container_name: apis
+    links:
+      - postgresdb
+    ports:
+      - "3000:3000"
+    build:
+      context: ./backendapis/
+      dockerfile: Dockerfile
+
+volumes:
+  pgdata:

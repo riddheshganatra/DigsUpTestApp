@@ -5,15 +5,12 @@ const args = process.argv;
 const { Transform } = require("stream");
 const connect = require("@databases/pg");
 const { sql } = require("@databases/pg");
-const nodeMailer = require("nodemailer");
 const config = require('./config.json')
+const sendEmail = require('./email');
 
 let db;
 
-let transporter = nodeMailer.createTransport({
-  host: "127.0.0.1",
-  port: 1025
-});
+
 
 const commands = ["start", "help"];
 
@@ -105,7 +102,8 @@ function getTransformStream() {
       if (this.records.length > 0) {
         sendEmailAndUpdateInDb(this.records).then(data => {
           this.records.forEach(record => {
-            this.push(record.email);
+            this.push(`processing done: ${record.email}\n`);
+
           });
           done();
         });
@@ -124,12 +122,7 @@ async function sendEmailAndUpdateInDb(array) {
 
     let results = await Promise.all(
       array.map(record => {
-        return transporter.sendMail({
-          from: `info@digsup.com`,
-          to: record.email,
-          subject: `test subject`,
-          text: `sample text`
-        });
+        return sendEmail(record.email);
       })
     );
 

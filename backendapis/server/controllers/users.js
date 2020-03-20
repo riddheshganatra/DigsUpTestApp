@@ -7,7 +7,7 @@ module.exports = {
       
       let user= await User
       .create({
-        email: req.body.email,
+        email: req.body.email.toLowerCase(),
         flag: 'unsent',
       })
 

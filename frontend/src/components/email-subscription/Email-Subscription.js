@@ -24,12 +24,11 @@ class EmailSubscription extends Component {
             console.log("handleSubmit ===> ", event);
             if (this.state.email) {
                 this.setState({ isLoading: true });
+                // TODO: use this as env variable
                 const apiUrl = 'http://localhost:3000/api/users'
                 let response = await axios.post(apiUrl, {
                     email: this.state.email
                 }).catch(error=>{
-                    console.log(error);
-                    debugger;
                     this.setState({
                         isError: true,
                         isLoading: false,
@@ -37,10 +36,7 @@ class EmailSubscription extends Component {
                         message: error.response.data.error.message
                     });
 
-                    // return error
                 })
-                debugger
-                console.log(response);
                 
                 if (response && response.data) {
                     let email = this.state.email;

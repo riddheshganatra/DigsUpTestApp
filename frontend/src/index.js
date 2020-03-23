@@ -33,7 +33,6 @@ const routing = (
                     </ul>
                 </div>
             </nav>
-            {/* <Route exact path='/' component={App} /> */}
             <Route path='/' component={EmailSubscription} />
         </div>
     </Router>

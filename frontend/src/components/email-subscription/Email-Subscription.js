@@ -13,11 +13,13 @@ class EmailSubscription extends Component {
         }
     }
 
-    onEmailChange(event) {
+    onEmailChange = (event)=> {
         this.setState({ email: event.target.value })
+        console.log(this.state);
+        
     }
 
-    async handleSubmit(event) {
+    handleSubmit = async (event) => {
      
             
             event.preventDefault();
@@ -33,7 +35,7 @@ class EmailSubscription extends Component {
                         isError: true,
                         isLoading: false,
                         
-                        message: error.response.data.error.message
+                        message: error?.response?.data?.error?.message || "Some error, Please try after some time"
                     });
 
                 })
@@ -46,11 +48,12 @@ class EmailSubscription extends Component {
                         email: '',
                         message: `Email ${email} subscribed.`
                     });
-                    console.log("API data ===> ", response);
+                    // console.log("API data ===> ", response);
                     setTimeout(() => {
                         this.setState({
                             message: ''
                         })
+                        // config variable
                     }, 2000);
                 }
             }
@@ -63,11 +66,11 @@ class EmailSubscription extends Component {
             <div className="card w-75 mx-auto mt-5 shadow-sm">
                 <h5 className="card-title border-bottom p-2">Signup</h5>
                 <div className="card-body">
-                    <form onSubmit={this.handleSubmit.bind(this)} className="w-75 mx-auto">
+                    <form onSubmit={this.handleSubmit} className="w-75 mx-auto">
                         <div className="form-group">
                             <label> Email </label>
                             <input className="form-control" value={this.state.email} type="email"
-                                placeholder="example@example.com" onChange={this.onEmailChange.bind(this)} required />
+                                placeholder="example@example.com" onChange={this.onEmailChange} required />
                         </div>
                         <div className="form-group text-center">
                             <button
